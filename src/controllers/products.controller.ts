@@ -3,7 +3,7 @@ import {
   ListProductsByCategory,
   UpdateProduct,
 } from "../application/usecases";
-import DeleteProduct from "../application/usecases/product/remove-product";
+import DeleteProduct from "../application/usecases/product/delete-product";
 import ProductRepository from "../domain/interfaces/repositories/product-repository";
 import CreateProductDTO from "../infra/api/dto/create-product.dto";
 import DeleteProductParamDTO from "../infra/api/dto/delete-product-param.dto";
@@ -11,7 +11,7 @@ import ListProductByCategoryDTO from "../infra/api/dto/list-product-by-category.
 import UpdateProductParamDTO from "../infra/api/dto/update-product-param.dto";
 import UpdateProductDTO from "../infra/api/dto/update-product.dto";
 import { inject } from "../infra/di/registry";
-import ProductGateway from "../infra/gateways/product.gateway";
+import ProductGateway from "../infra/gateways/product.gateway.impl";
 
 export default class ProductsController {
   @inject("productRepository")
@@ -28,6 +28,7 @@ export default class ProductsController {
     const product = await useCase.execute(createProductDTO);
     return product;
   }
+
   async updateProduct(params: any, body: any) {
     const updateProductDTO = new UpdateProductDTO(
       body.description,
@@ -43,13 +44,15 @@ export default class ProductsController {
     });
     return { message: "Product updated successfully" };
   }
-  async removeProduct(params: any) {
+
+  async deleteProduct(params: any) {
     const deleteProductParamDTO = new DeleteProductParamDTO(params.id);
     const gateway = new ProductGateway(this.productRepository);
     const useCase = new DeleteProduct(gateway);
     await useCase.execute({ id: deleteProductParamDTO.id });
     return { message: "Product deleted successfully" };
   }
+
   async listProductsByCategory(params: any) {
     const listProductsByCategoryDTO = new ListProductByCategoryDTO(
       params.category

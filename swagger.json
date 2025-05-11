@@ -1,0 +1,264 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Produtos Fastfood",
+    "version": "1.0.0",
+    "description": "API for a fastfood service developed for the Pos Degree software architecture at FIAP"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Localhost"
+    }
+  ],
+  "paths": {
+    "/healthy": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Health Check",
+        "description": "Returns the health status of the service",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "healthy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "tags": ["product"],
+        "summary": "Create a new product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product created successfully"
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/Product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "patch": {
+        "tags": ["product"],
+        "summary": "Update an existing product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["product"],
+        "summary": "Delete a product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{category}": {
+      "get": {
+        "tags": ["product"],
+        "summary": "List products by category",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["LANCHE", "BEBIDA", "SOBREMESA", "ACOMPANHAMENTO"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateProductDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "The description of the product.",
+            "example": "Chicken sandwich"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "The price of the product.",
+            "example": 15.99
+          },
+          "category": {
+            "type": "string",
+            "enum": ["LANCHE", "BEBIDA", "SOBREMESA", "ACOMPANHAMENTO"],
+            "description": "The category of the product. It must be one of the valid values.",
+            "example": "LANCHE"
+          }
+        },
+        "required": ["description", "price", "category"]
+      },
+      "UpdateProductDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "The description of the product.",
+            "example": "Chicken sandwich"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "The price of the product.",
+            "example": 15.99
+          },
+          "category": {
+            "type": "string",
+            "enum": ["LANCHE", "BEBIDA", "SOBREMESA", "ACOMPANHAMENTO"],
+            "description": "The category of the product. It must be one of the valid values.",
+            "example": "LANCHE"
+          }
+        },
+        "required": ["description", "price", "category"]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier for the product.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product.",
+            "example": "Chicken sandwich"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "The price of the product.",
+            "example": 15.99
+          },
+          "category": {
+            "type": "string",
+            "enum": ["LANCHE", "BEBIDA", "SOBREMESA", "ACOMPANHAMENTO"],
+            "description": "The category of the product. It must be one of the valid values.",
+            "example": "LANCHE"
+          }
+        }
+      }
+    }
+  }
+}

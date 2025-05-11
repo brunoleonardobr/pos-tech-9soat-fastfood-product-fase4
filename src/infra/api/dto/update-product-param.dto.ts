@@ -1,4 +1,4 @@
-import InvalidParameterException from "../../../application/exceptions/invalid-parameter.exception";
+import InvalidParameterException from "../../../domain/exceptions/invalid-parameter.exception";
 
 export default class UpdateProductParamDTO {
   constructor(readonly id: string) {

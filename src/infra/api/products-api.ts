@@ -37,7 +37,7 @@ export default class ProductsApi {
       "delete",
       "/product/:id",
       async (params: DeleteProductParamDTO, body: any) => {
-        await this.controller.removeProduct(params);
+        await this.controller.deleteProduct(params);
         return { message: "Product deleted successfully" };
       }
     );

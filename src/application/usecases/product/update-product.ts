@@ -1,6 +1,6 @@
 import { ERROR_MESSAGES } from "../../../domain/enums/error-messages.enum";
-import ProductGateway from "../../../gateways/product.gateway";
-import InvalidParameterException from "../../exceptions/invalid-parameter.exception";
+import InvalidParameterException from "../../../domain/exceptions/invalid-parameter.exception";
+import { ProductGateway } from "../../../domain/interfaces/gateways/product-gateway";
 import UseCase from "../use-case";
 
 export default class UpdateProduct implements UseCase {
@@ -8,7 +8,9 @@ export default class UpdateProduct implements UseCase {
 
   async execute(input: Input) {
     this.validateInput(input);
-    const productExists = await this.productGateway.getById({ id: input.id });
+    const productExists = await this.productGateway.getById({
+      id: input.id,
+    });
     if (!productExists) {
       throw new InvalidParameterException(ERROR_MESSAGES.PRODUCT_NOT_FOUND);
     }
@@ -21,7 +23,7 @@ export default class UpdateProduct implements UseCase {
       throw new InvalidParameterException(ERROR_MESSAGES.ID_REQUIRED);
     }
     const { description, price, category } = input;
-    if (!description && price == null && !category) {
+    if (!description && price == 0 && !category) {
       throw new InvalidParameterException(
         ERROR_MESSAGES.AT_LEAST_ONE_PARAM_REQUIRED
       );
@@ -33,7 +35,7 @@ export default class UpdateProduct implements UseCase {
     const updateData: UpdateData = { id };
 
     if (description) updateData.description = description;
-    if (price != null) updateData.price = price;
+    if (price != 0) updateData.price = price;
     if (category) updateData.category = category;
 
     return updateData;

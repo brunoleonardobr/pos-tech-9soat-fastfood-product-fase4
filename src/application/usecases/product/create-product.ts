@@ -1,6 +1,7 @@
 import { Product } from "../../../domain/entities/product";
-import ProductGateway from "../../../gateways/product.gateway";
-import ProductAlreadyExists from "../../exceptions/product-already-exists.exception";
+import ProductAlreadyExistsException from "../../../domain/exceptions/product-already-exists.exception";
+import { ProductGateway } from "../../../domain/interfaces/gateways/product-gateway";
+
 import UseCase from "../use-case";
 
 export default class CreateProduct implements UseCase {
@@ -10,7 +11,7 @@ export default class CreateProduct implements UseCase {
     const productSaved = await this.productGateway.getByDescription({
       description: input.description,
     });
-    if (productSaved) throw new ProductAlreadyExists();
+    if (productSaved) throw new ProductAlreadyExistsException();
     const product = Product.create(
       input.description,
       input.price,

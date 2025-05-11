@@ -1,5 +1,4 @@
-import InvalidParameterException from "../../../application/exceptions/invalid-parameter.exception";
-
+import InvalidParameterException from "../../../domain/exceptions/invalid-parameter.exception";
 export default class ListProductByCategoryDTO {
   constructor(readonly category: string) {
     this.validate();

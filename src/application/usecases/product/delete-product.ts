@@ -1,6 +1,5 @@
-import { ERROR_MESSAGES } from "../../../domain/enums/error-messages.enum";
-import ProductNotFoundException from "../../exceptions/product-not-found.exception";
-import ProductGateway from "../../repositories/product-repository";
+import ProductNotFoundException from "../../../domain/exceptions/product-not-found.exception";
+import { ProductGateway } from "../../../domain/interfaces/gateways/product-gateway";
 import UseCase from "../use-case";
 
 export default class DeleteProduct implements UseCase {
@@ -9,7 +8,7 @@ export default class DeleteProduct implements UseCase {
   async execute(input: Input) {
     const productExists = await this.productGateway.getById({ id: input.id });
     if (!productExists) {
-      throw new ProductNotFoundException(ERROR_MESSAGES.PRODUCT_NOT_FOUND);
+      throw new ProductNotFoundException();
     }
     await this.productGateway.delete({ id: input.id });
   }
