@@ -18,5 +18,5 @@ import ProductRepositoryDatabase from "./infra/repositories/product-repository-d
 
   new HealthCheckApiController();
   new ProductsApi();
-  dependencies.httpServer.listen(3000);
+  dependencies.httpServer.listen(3001);
 })();

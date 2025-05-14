@@ -1,6 +1,15 @@
+import {
+  CreateProductInput,
+  DeleteProductInput,
+  GetProductByCategory,
+  GetProductById,
+  GetProductByName,
+  ProductGateway,
+  UpdateProductInput,
+} from "../../domain/interfaces/gateways/product-gateway";
 import ProductRepository from "../../domain/interfaces/repositories/product-repository";
 
-export default class ProductGateway {
+export default class ProductGatewayImpl implements ProductGateway {
   constructor(readonly productRepository: ProductRepository) {}
   async create(input: CreateProductInput): Promise<void> {
     await this.productRepository.create(input);
@@ -21,33 +30,3 @@ export default class ProductGateway {
     return this.productRepository.getById(input);
   }
 }
-
-export type GetProductByCategory = {
-  category: string;
-};
-
-export type CreateProductInput = {
-  id: string;
-  description: string;
-  price: number;
-  category: string;
-};
-
-export type UpdateProductInput = {
-  id: string;
-  description?: string;
-  price?: number;
-  category?: string;
-};
-
-export type DeleteProductInput = {
-  id: string;
-};
-
-export type GetProductByName = {
-  description: string;
-};
-
-export type GetProductById = {
-  id: string;
-};

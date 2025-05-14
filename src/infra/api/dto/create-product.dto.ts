@@ -1,6 +1,6 @@
 import { Category } from "../../../domain/enums/category.enum";
 import { ERROR_MESSAGES } from "../../../domain/enums/error-messages.enum";
-import InvalidParameterException from "../../../application/exceptions/invalid-parameter.exception";
+import InvalidParameterException from "../../../domain/exceptions/invalid-parameter.exception";
 
 export default class CreateProductDTO {
   constructor(
